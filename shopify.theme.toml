@@ -1,0 +1,14 @@
+# Shopify CLI — https://shopify.dev/docs/storefronts/themes/tools/cli/environments
+#
+# Storefront password (Online Store → Preferences → Password protection), choose ONE:
+#
+# A) Environment variable (good for Git — nothing secret in this file):
+#    PowerShell:  $env:SHOPIFY_FLAG_STORE_PASSWORD = "your-password"
+#    Then:        shopify theme dev --open
+#
+# B) Add a line under [environments.default]:
+#    store-password = "your-password"
+#    (Do not push that to a public repo.)
+
+[environments.default]
+store = "true-sense-8349.myshopify.com"

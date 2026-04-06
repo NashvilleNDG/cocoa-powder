@@ -1,0 +1,40 @@
+/**
+ * Modern storefront polish — loads after base.css.
+ * Pairs with Theme settings (wide layout, teal accent, larger type).
+ */
+
+:root {
+  --hover-transition-duration: 0.32s;
+  --hover-transition-timing: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+/* Softer, editorial headings */
+:is(h1, h2, h3, .h1, .h2, .h3) {
+  letter-spacing: -0.02em;
+}
+
+/* Light depth on merchandising cards */
+@media (prefers-reduced-motion: no-preference) {
+  .product-card,
+  .collection-card,
+  .predictive-search-results__card--product,
+  .predictive-search-results__card {
+    box-shadow: 0 1px 2px rgb(20 18 16 / 0.04), 0 8px 24px rgb(20 18 16 / 0.05);
+  }
+
+  .product-card:hover,
+  .collection-card:hover,
+  .predictive-search-results__card--product:hover,
+  .predictive-search-results__card:hover {
+    box-shadow: 0 4px 12px rgb(20 18 16 / 0.06), 0 20px 48px rgb(20 18 16 / 0.08);
+  }
+}
