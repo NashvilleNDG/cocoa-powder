@@ -192,7 +192,7 @@
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
         "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
+        "horizontal_alignment_flex_direction_column": "flex-end",
         "vertical_alignment_flex_direction_column": "flex-end",
         "gap": 16,
         "section_width": "page-width",
@@ -206,7 +206,10 @@
         "blurred_reflection": false,
         "reflection_opacity": 75,
         "padding-block-start": 0,
-        "padding-block-end": 31
+        "padding-block-end": 31,
+        "media_1_asset": "hero-cocoa-background.png",
+        "media_1_asset_alt": "Premium cocoa powder and cocoa beans",
+        "media_1_asset_aspect_ratio": 1.78
       }
     },
     "product_list_EDUBdR": {

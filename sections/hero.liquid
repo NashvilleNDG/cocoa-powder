@@ -10,14 +10,22 @@
   assign media_2_mobile = 'none'
   assign has_only_video = false
   assign has_only_video_mobile = false
+  assign media_1_is_asset = false
+  assign media_1_asset_filename = section.settings.media_1_asset | strip
 
   # Desktop media checks
   # For each media slot, check if the media is not blank and the media type matches the slot
   # Need to check both (1) media picker is not blank AND (2) section.setting.media_type because user can toggle between different media types to display, but choosing "Image" doesn't clear a saved "Video" in the theme editor.
   # The alternate setting (section.settings.image_1 when "Video" is selected) is only visually hidden in theme editor.
-  if section.settings.image_1 != blank and section.settings.media_type_1 == 'image'
-    assign media_1 = 'image'
-    assign media_count = media_count | plus: 1
+  if section.settings.media_type_1 == 'image'
+    if section.settings.image_1 != blank
+      assign media_1 = 'image'
+      assign media_count = media_count | plus: 1
+    elsif media_1_asset_filename != blank
+      assign media_1 = 'image'
+      assign media_1_is_asset = true
+      assign media_count = media_count | plus: 1
+    endif
   endif
   if section.settings.video_1 != blank and section.settings.media_type_1 == 'video'
     assign media_1 = 'video'
@@ -115,7 +123,20 @@
 %}
 
 {% capture media_slot_1 %}
-  {%- if media_1 == 'image' and media_1_mobile == 'image' -%}
+  {%- if media_1 == 'image' and media_1_is_asset -%}
+    <div class="{{ media_wrapper_desktop_class }}">
+      <img
+        src="{{ media_1_asset_filename | asset_url }}"
+        alt="{{ section.settings.media_1_asset_alt | escape }}"
+        class="hero__media"
+        loading="eager"
+        fetchpriority="{{ fetch_priority }}"
+        width="2400"
+        height="1350"
+        data-testid="hero-desktop-image-1-asset"
+      >
+    </div>
+  {%- elsif media_1 == 'image' and media_1_mobile == 'image' -%}
     {%- comment -%} Both desktop and mobile are images. Assume similar images, and this is art direction: use picture element. {%- endcomment -%}
     <picture
       data-testid="hero-picture-1"
@@ -332,7 +353,15 @@
 {% endcapture %}
 
 {% capture media_blurred %}
-  {% if media_1 == 'image' %}
+  {% if media_1_is_asset %}
+    <img
+      src="{{ media_1_asset_filename | asset_url }}"
+      alt=""
+      class="hero__media"
+      width="2400"
+      height="1350"
+    >
+  {% elsif media_1 == 'image' %}
     {{
       section.settings.image_1
       | image_url: width: 3840
@@ -431,6 +460,14 @@
               class: 'hero__media',
               sizes: sizes
             }}
+        {% elsif media_1_is_asset %}
+          <img
+            src="{{ media_1_asset_filename | asset_url }}"
+            alt=""
+            class="hero__media"
+            width="2400"
+            height="1350"
+          >
         {% elsif media_1 == 'image' %}
           {{ section.settings.image_1
             | image_url: width: 1600
@@ -512,7 +549,7 @@
     {%- endif -%}
     <div
       class="hero__media-grid"
-      style="--hero-media-count: {{ media_count }};--hero-media-count-mobile: {{ media_count_mobile }};{%- if section.settings.image_1 != blank -%} --hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }};{% endif %}"
+      style="--hero-media-count: {{ media_count }};--hero-media-count-mobile: {{ media_count_mobile }};{%- if section.settings.image_1 != blank -%} --hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }};{%- elsif media_1_is_asset -%} --hero-media-aspect-ratio: {{ section.settings.media_1_asset_aspect_ratio }};{% endif %}"
       data-testid="hero-media-wrapper"
     >
       {% liquid
@@ -806,6 +843,28 @@
       "id": "image_1",
       "label": "t:settings.image",
       "visible_if": "{{ section.settings.media_type_1 == 'image' }}"
+    },
+    {
+      "type": "text",
+      "id": "media_1_asset",
+      "label": "Theme asset image (Media 1)",
+      "default": "hero-cocoa-background.png",
+      "info": "Filename in the theme /assets folder. Used when no image is selected above. Upload the file in Admin → Online Store → Themes → … → Edit code → Assets, or add it in your theme project."
+    },
+    {
+      "type": "text",
+      "id": "media_1_asset_alt",
+      "label": "Theme asset image alt text",
+      "default": "Premium cocoa powder and cocoa beans"
+    },
+    {
+      "type": "range",
+      "id": "media_1_asset_aspect_ratio",
+      "min": 1,
+      "max": 3,
+      "step": 0.01,
+      "default": 1.78,
+      "label": "Theme asset aspect ratio (width ÷ height)"
     },
     {
       "type": "video",

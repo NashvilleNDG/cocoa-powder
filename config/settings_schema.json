@@ -26,6 +26,35 @@
         "info": "t:content.inverse_logo_info"
       },
       {
+        "type": "text",
+        "id": "logo_asset",
+        "label": "Logo file in theme assets",
+        "default": "true-senses-logo.png",
+        "info": "Filename in the /assets folder. Shown when no default logo image is uploaded above."
+      },
+      {
+        "type": "text",
+        "id": "logo_inverse_asset",
+        "label": "Inverse logo file in theme assets (optional)",
+        "info": "Optional file for transparent headers. If empty, the default logo asset is reused."
+      },
+      {
+        "type": "text",
+        "id": "logo_asset_alt",
+        "label": "Logo asset alt text",
+        "default": "True Senses — Premium Cocoa Powder"
+      },
+      {
+        "type": "range",
+        "id": "logo_asset_aspect_ratio",
+        "min": 0.25,
+        "max": 3.5,
+        "step": 0.01,
+        "default": 0.52,
+        "label": "Asset logo width ÷ height",
+        "info": "Vertical logos use lower values (about 0.45–0.65). Wider marks use higher values."
+      },
+      {
         "type": "range",
         "id": "logo_height",
         "label": "t:settings.desktop_height",
@@ -34,7 +63,7 @@
         "step": 1,
         "unit": "px",
         "default": 36,
-        "visible_if": "{{ settings.logo != blank or settings.logo_inverse != blank }}",
+        "visible_if": "{{ settings.logo != blank or settings.logo_inverse != blank or settings.logo_asset != blank }}",
         "info": "t:info.logo_height"
       },
       {
@@ -46,7 +75,7 @@
         "step": 1,
         "unit": "px",
         "default": 28,
-        "visible_if": "{{ settings.logo != blank or settings.logo_inverse != blank }}",
+        "visible_if": "{{ settings.logo != blank or settings.logo_inverse != blank or settings.logo_asset != blank }}",
         "info": "t:info.logo_height"
       },
       {
